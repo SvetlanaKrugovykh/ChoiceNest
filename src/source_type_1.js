@@ -24,12 +24,14 @@ async function getSource1Listings({ minPrice = 1000, maxPrice = 5000, rooms = [1
   }
 
   for (const district of districtList) {
-    const queryDistrict = district
-      ? `?search%5Border%5D=created_at_first%3Adesc&search%5Blocation_city_id%5D=39&search%5Blocation_district_name%5D%5B0%5D=${encodeURIComponent(district)}`
-      : '?search%5Border%5D=created_at_first%3Adesc&search%5Blocation_city_id%5D=39'
-
-    const queryPrice = `&search%5Bfilter_float_price%3Afrom%5D=${minPrice}&search%5Bfilter_float_price%3Ato%5D=${maxPrice}`
-    const url = `${baseUrl}${queryDistrict}${queryPrice}`
+    let url
+    const roomParams = rooms.map(r => `roomsNumber[]=${r}`).join('&')
+    if (district) {
+      const districtPath = district.toLowerCase().replace(/\s/g, "-")
+      url = `${baseUrl}/${districtPath}?${roomParams}&priceMin=${minPrice}&priceMax=${maxPrice}`
+    } else {
+      url = `${baseUrl}?${roomParams}&priceMin=${minPrice}&priceMax=${maxPrice}`
+    }
 
     await page.goto(url, { waitUntil: "networkidle0" })
 
