@@ -3,9 +3,10 @@ const { getCookies } = require('./guards_out/getCredentials')
 const fs = require('fs')
 const path = require('path')
 const { extractSentencesFromHTML_type_2 } = require('./parseHtml_type_2')
+const { parsePolishDate } = require('./common')
 require('dotenv').config()
 
-async function getSource2Listings({ minPrice = 1000, maxPrice = 5000, rooms = [1, 2, 3], districts = [] } = {}) {
+async function getSource2Listings({ minPrice = 1000, maxPrice = 5000, rooms = [], districts = [], chatID } = {}) {
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -52,11 +53,11 @@ async function getSource2Listings({ minPrice = 1000, maxPrice = 5000, rooms = [1
       const safeName = (district || 'all').replace(/[^\w-]+/g, '_')
 
       if (DEBUG_LEVEL > 5 && pageNum === 1) {
-        const filePathScreenshot = path.join(screenshotDir, `src2_${safeName}_p${pageNum}.png`)
+        const filePathScreenshot = path.join(screenshotDir, `src2_${chatID}_${safeName}_p${pageNum}.png`)
         await page.screenshot({ path: filePathScreenshot, fullPage: true })
       }
 
-      const filePathHTML = path.join(screenshotDir, `src2_${safeName}_p${pageNum}.html`)
+      const filePathHTML = path.join(screenshotDir, `src2_${chatID}_${safeName}_p${pageNum}.html`)
       const html = await page.content()
       fs.writeFileSync(filePathHTML, html)
       const listings = await extractSentencesFromHTML_type_2(filePathHTML, process.env.PHOTO_LINK_2 || '')
@@ -65,6 +66,7 @@ async function getSource2Listings({ minPrice = 1000, maxPrice = 5000, rooms = [1
         hasMore = false
       } else {
         results.push(...listings)
+        fs.unlinkSync(filePathHTML)
         pageNum++
       }
     }
@@ -83,6 +85,13 @@ async function getSource2Listings({ minPrice = 1000, maxPrice = 5000, rooms = [1
   }
 
   console.log('Results after deduplication:', unique.length)
+
+  unique.sort((a, b) => {
+    const dateA = parsePolishDate(a.location)
+    const dateB = parsePolishDate(b.location)
+    return dateB - dateA
+  })
+
   return unique
 }
 

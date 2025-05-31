@@ -9,7 +9,7 @@ if (!fs.existsSync(screenshotDir)) {
 
 
 //const districts = []
-const districts = ["Mokotów"]
+const districts = ["Bemowo"]
 // const districts = ["Mokotów", "Wola"]
 
 async function main() {
@@ -25,13 +25,14 @@ async function main() {
 
   console.log("=== Source2 LISTINGS ===")
   const source2Results = await getSource2Listings({
-    minPrice: 2700,
-    maxPrice: 2800,
+    minPrice: 3500,
+    maxPrice: 4000,
     rooms: [],
-    districts
+    districts,
+    chatID: 12345678,
   })
 
-  const items = 2
+  const items = 22
   const firstSome = source2Results.slice(0, items)
   const lastSome = source2Results.slice(-items)
   console.log(`First ${items}:`, firstSome)
