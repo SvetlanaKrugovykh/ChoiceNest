@@ -24,6 +24,47 @@ async function findMainPhotoUrl(page) {
   })
 }
 
+async function addBase64ScreenShot(listings, source_num, chatID = 'default') {
+  const browser = await puppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  try {
+    const cookies = getCookies(source_num)
+    const context = browser.defaultBrowserContext()
+    await context.setCookie(...cookies)
+  } catch (e) {
+    console.error('Failed to set cookies:', e.message)
+  }
+
+  const screenshotDir = './path/out'
+  if (!fs.existsSync(screenshotDir)) {
+    fs.mkdirSync(screenshotDir, { recursive: true })
+  }
+
+  const results = []
+
+  for (let i = 0; i < listings.length; i++) {
+    const item = listings[i]
+    try {
+      await page.goto(item.link, { waitUntil: 'networkidle2' })
+      const safeName = (item.title || 'item').replace(/[^\w-]+/g, '_').slice(0, 30)
+      const filePathScreenshot = path.join(screenshotDir, `src2_screenshot_${chatID}_${safeName}_p${i + 1}.png`)
+      await page.screenshot({ path: filePathScreenshot }, { fullPage: true })
+      const buffer = fs.readFileSync(filePathScreenshot)
+      const photo_base_64 = buffer.toString('base64')
+
+      results.push({ ...item, photo_base_64 })
+    } catch (err) {
+      results.push({ ...item, photo_base_64: '' })
+      console.error(`Error processing link ${item.link}:`, err.message)
+    }
+  }
+
+  await browser.close()
+  return results
+}
+
+
 async function addBase64Photo(listings, source_num, chatID = 'default') {
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
@@ -72,4 +113,4 @@ async function addBase64Photo(listings, source_num, chatID = 'default') {
   return results
 }
 
-module.exports = { addBase64Photo }
+module.exports = { addBase64Photo, addBase64ScreenShot }

@@ -1,7 +1,7 @@
 const fs = require('fs')
 const getSource2Listings = require('./src/source_type_2').getSource2Listings
 const getSource1Listings = require('./src/source_type_1').getSource1Listings
-const { addBase64Photo } = require('./src/addBase64Photo')
+const { addBase64ScreenShot } = require('./src/addBase64Photo')
 require('dotenv').config()
 
 const screenshotDir = './path/out'
@@ -40,7 +40,7 @@ async function main() {
   // const lastSome = source2Results.slice(-items)
   console.log(`First ${items}:`, firstSome)
   // console.log(`Last ${items}:`, lastSome)
-  const withBase64 = await addBase64Photo(firstSome, 2, '12345678')
+  const withBase64 = await addBase64ScreenShot(firstSome, 2, '12345678')
   console.log("=== Listings with Base64 Photos ===")
   console.log(withBase64)
 
