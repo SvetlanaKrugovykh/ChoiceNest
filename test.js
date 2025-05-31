@@ -30,7 +30,7 @@ async function main() {
     minPrice: 3500,
     maxPrice: 4000,
     rooms: [],
-    districts,
+    districts: [],
     chatID: 12345678,
   })
 
