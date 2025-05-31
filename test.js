@@ -9,27 +9,27 @@ if (!fs.existsSync(screenshotDir)) {
 
 
 const districts = []
-// const districts = ["", "", ""]  //TODO
+//const districts = ["Mokotów", "Wola"]
 
 async function main() {
 
-  console.log("\n=== Source1 LISTINGS ===")
-  const source1Results = await getSource1Listings({
-    minPrice: 1500,
-    maxPrice: 5000,
-    rooms: [1, 2],
-    districts
-  })
-  console.log(source1Results)
-
-  // console.log("=== Source2 LISTINGS ===")
-  // const source2Results = await getSource2Listings({
+  // console.log("\n=== Source1 LISTINGS ===")
+  // const source1Results = await getSource1Listings({
   //   minPrice: 2700,
   //   maxPrice: 2800,
   //   rooms: [1, 2],
   //   districts
   // })
-  // console.log(source2Results)
+  // console.log(source1Results)
+
+  console.log("=== Source2 LISTINGS ===")
+  const source2Results = await getSource2Listings({
+    minPrice: 2700,
+    maxPrice: 2800,
+    rooms: [],
+    districts
+  })
+  console.log(source2Results)
 
 }
 

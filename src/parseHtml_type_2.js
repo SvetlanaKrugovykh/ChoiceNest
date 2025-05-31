@@ -2,7 +2,7 @@ const fs = require('fs')
 const cheerio = require('cheerio')
 const path = require('path')
 
-module.exports.extractSentencesFromHTML = async function (filename, photo_link) {
+module.exports.extractSentencesFromHTML_type_2 = async function (filename, photo_link) {
   try {
     const filePath = path.resolve(filename)
     const html = fs.readFileSync(filePath, 'utf-8')
@@ -36,7 +36,7 @@ module.exports.extractSentencesFromHTML = async function (filename, photo_link) 
 
     return results
   } catch (err) {
-    console.error('Ошибка при чтении HTML:', err.message)
+    console.error('Error reading html:', err.message)
     return []
   }
 }
