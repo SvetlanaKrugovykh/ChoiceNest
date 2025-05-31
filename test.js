@@ -1,6 +1,8 @@
 const fs = require('fs')
 const getSource2Listings = require('./src/source_type_2').getSource2Listings
 const getSource1Listings = require('./src/source_type_1').getSource1Listings
+const { addBase64Photo } = require('./src/addBase64Photo')
+require('dotenv').config()
 
 const screenshotDir = './path/out'
 if (!fs.existsSync(screenshotDir)) {
@@ -8,8 +10,8 @@ if (!fs.existsSync(screenshotDir)) {
 }
 
 
-//const districts = []
-const districts = ["Bemowo"]
+
+const districts = ["Mokotów"]
 // const districts = ["Mokotów", "Wola"]
 
 async function main() {
@@ -32,11 +34,16 @@ async function main() {
     chatID: 12345678,
   })
 
-  const items = 22
+  const items = process.env.ITEMS ? parseInt(process.env.ITEMS) : 7
+
   const firstSome = source2Results.slice(0, items)
-  const lastSome = source2Results.slice(-items)
+  // const lastSome = source2Results.slice(-items)
   console.log(`First ${items}:`, firstSome)
-  console.log(`Last ${items}:`, lastSome)
+  // console.log(`Last ${items}:`, lastSome)
+  const withBase64 = await addBase64Photo(firstSome, 2, '12345678')
+  console.log("=== Listings with Base64 Photos ===")
+  console.log(withBase64)
+
 }
 
 main().catch(err => {
