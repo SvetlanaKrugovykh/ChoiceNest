@@ -66,6 +66,7 @@ async function addBase64ScreenShot(listings, source_num, chatID = 'default') {
 
 
 async function addBase64Photo(listings, source_num, chatID = 'default') {
+  const DEBUG_LEVEL = parseInt(process.env.DEBUG_LEVEL || '0', 10)
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -89,16 +90,16 @@ async function addBase64Photo(listings, source_num, chatID = 'default') {
     try {
       await page.goto(item.link, { waitUntil: 'networkidle2' })
       const safeName = (item.title || 'item').replace(/[^\w-]+/g, '_').slice(0, 30)
-      const filePathHTML = path.join(screenshotDir, `src2_photo_${chatID}_${safeName}_p${i + 1}.html`)
-      const html = await page.content()
-      fs.writeFileSync(filePathHTML, html)
 
       let photoUrl = await findMainPhotoUrl(page)
 
       let photo_base_64 = ''
       if (photoUrl) {
+        const filePathScreenshot = path.join(screenshotDir, `src2_screenshot_${chatID}_${safeName}_p${i + 1}.png`)
         const viewSource = await page.goto(photoUrl)
         const buffer = await viewSource.buffer()
+        if (DEBUG_LEVEL > 5) fs.writeFileSync(filePathScreenshot, buffer)
+
         photo_base_64 = buffer.toString('base64')
       }
 
