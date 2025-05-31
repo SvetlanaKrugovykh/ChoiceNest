@@ -8,8 +8,9 @@ if (!fs.existsSync(screenshotDir)) {
 }
 
 
-const districts = []
-//const districts = ["Mokotów", "Wola"]
+//const districts = []
+const districts = ["Mokotów"]
+// const districts = ["Mokotów", "Wola"]
 
 async function main() {
 
@@ -29,8 +30,12 @@ async function main() {
     rooms: [],
     districts
   })
-  console.log(source2Results)
 
+  const items = 2
+  const firstSome = source2Results.slice(0, items)
+  const lastSome = source2Results.slice(-items)
+  console.log(`First ${items}:`, firstSome)
+  console.log(`Last ${items}:`, lastSome)
 }
 
 main().catch(err => {

@@ -36,8 +36,8 @@ async function getSource2Listings({ minPrice = 1000, maxPrice = 5000, rooms = [1
     query += `search%5Bfilter_float_price:from%5D=${minPrice}&search%5Bfilter_float_price:to%5D=${maxPrice}`
 
     if (district) {
-      const queryDistrict = `q-${district.toLowerCase().replace(/\s/g, "-")}/`
-      url = `${baseUrl}${queryDistrict}?${query}`
+      const districtParam = `q=${encodeURIComponent(district)}&`
+      url = `${baseUrl}?${districtParam}${query}`
     } else {
       url = `${baseUrl}?${query}`
     }
@@ -71,7 +71,19 @@ async function getSource2Listings({ minPrice = 1000, maxPrice = 5000, rooms = [1
   }
 
   await browser.close()
-  return results
+
+  console.log('Results before deduplication:', results.length)
+  const unique = []
+  const seen = new Set()
+  for (const item of results) {
+    if (item.link && !seen.has(item.link)) {
+      unique.push(item)
+      seen.add(item.link)
+    }
+  }
+
+  console.log('Results after deduplication:', unique.length)
+  return unique
 }
 
 module.exports = { getSource2Listings }
