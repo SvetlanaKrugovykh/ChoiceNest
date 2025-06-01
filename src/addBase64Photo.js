@@ -2,6 +2,7 @@ const puppeteer = require('puppeteer')
 const { getCookies } = require('./guards_out/getCredentials')
 const fs = require('fs')
 const path = require('path')
+require('dotenv').config()
 
 async function findMainPhotoUrl(page) {
   return await page.evaluate(() => {
@@ -67,6 +68,8 @@ async function addBase64ScreenShot(listings, source_num, chatID = 'default') {
 
 async function addBase64Photo(listings, source_num, chatID = 'default') {
   const DEBUG_LEVEL = parseInt(process.env.DEBUG_LEVEL || '0', 10)
+  const EXCLUDE_WORDS = (process.env.EXCLUDE_WORDS).split(',').map(w => w.trim().toLowerCase())
+
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -87,6 +90,11 @@ async function addBase64Photo(listings, source_num, chatID = 'default') {
 
   for (let i = 0; i < listings.length; i++) {
     const item = listings[i]
+    const linkLower = (item.link || '').toLowerCase()
+    if (EXCLUDE_WORDS.some(word => linkLower.includes(word))) {
+      results.push({ ...item, photo_base_64: '' })
+      continue
+    }
     try {
       await page.goto(item.link, { waitUntil: 'networkidle2' })
       const safeName = (item.title || 'item').replace(/[^\w-]+/g, '_').slice(0, 30)

@@ -28,12 +28,6 @@ async function getSource2Listings({ minPrice = 1000, maxPrice = 5000, rooms = []
   for (const district of districtList) {
     let url
     let query = ''
-    if (rooms && rooms.length > 0) {
-      query += rooms.map(r => `search%5Bfilter_enum_rooms%5D=${r}`).join('&')
-    }
-    if (query.length > 0) {
-      query += '&'
-    }
     query += `search%5Bfilter_float_price:from%5D=${minPrice}&search%5Bfilter_float_price:to%5D=${maxPrice}`
 
     if (district) {
