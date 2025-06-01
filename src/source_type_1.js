@@ -36,7 +36,7 @@ async function getSource1Listings({ minPrice = 1000, maxPrice = 5000, rooms = [1
       url = `${baseUrl}?${query}`
     }
 
-    await page.goto(url, { waitUntil: "networkidle0" })
+    await page.goto(url, { waitUntil: "networkidle0", timeout: 90000 })
 
     const safeName = (district || 'all').replace(/[^\w-]+/g, '_')
 

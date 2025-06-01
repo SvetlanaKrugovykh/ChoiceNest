@@ -39,11 +39,11 @@ async function main() {
 
   const firstSome = source2Results.slice(0, items)
   // const lastSome = source2Results.slice(-items)
-  logger.info(`First ${items}:`, firstSome)
+  logger.info(`First ${items}: ${JSON.stringify(firstSome, null, 2)}`)
   // logger.log(`Last ${items}:`, lastSome)
   const withBase64 = await addBase64Photo(firstSome, 2, '12345678')
   logger.info("=== Listings with Base64 Photos ===")
-  logger.info(withBase64)
+  logger.info(JSON.stringify(withBase64, null, 2))
 
 }
 

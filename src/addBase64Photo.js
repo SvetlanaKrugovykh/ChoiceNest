@@ -48,7 +48,7 @@ async function addBase64ScreenShot(listings, source_num, chatID = 'default') {
   for (let i = 0; i < listings.length; i++) {
     const item = listings[i]
     try {
-      await page.goto(item.link, { waitUntil: 'networkidle2' })
+      await page.goto(item.link, { waitUntil: 'networkidle2', timeout: 90000 })
       const safeName = (item.title || 'item').replace(/[^\w-]+/g, '_').slice(0, 30)
       const filePathScreenshot = path.join(screenshotDir, `src2_screenshot_${chatID}_${safeName}_p${i + 1}.png`)
       await page.screenshot({ path: filePathScreenshot }, { fullPage: true })
@@ -97,7 +97,7 @@ async function addBase64Photo(listings, source_num, chatID = 'default') {
       continue
     }
     try {
-      await page.goto(item.link, { waitUntil: 'networkidle2' })
+      await page.goto(item.link, { waitUntil: 'networkidle2', timeout: 90000 })
       const safeName = (item.title || 'item').replace(/[^\w-]+/g, '_').slice(0, 30)
 
       let photoUrl = await findMainPhotoUrl(page)

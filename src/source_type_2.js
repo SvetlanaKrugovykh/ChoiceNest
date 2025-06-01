@@ -43,7 +43,7 @@ async function getSource2Listings({ minPrice = 1000, maxPrice = 5000, rooms = []
     while (hasMore && pageNum <= MAX_PAGE) {
       const pagedUrl = `${url}&page=${pageNum}`
 
-      await page.goto(pagedUrl, { waitUntil: "networkidle0" })
+      await page.goto(pagedUrl, { waitUntil: "networkidle0", timeout: 90000 })
       const safeName = (district || 'all').replace(/[^\w-]+/g, '_')
 
       if (DEBUG_LEVEL > 5 && pageNum === 1) {
@@ -68,7 +68,7 @@ async function getSource2Listings({ minPrice = 1000, maxPrice = 5000, rooms = []
 
   await browser.close()
 
-  logger.info('Results before deduplication:', results.length)
+  logger.info(`Results before deduplication: ${results.length}`)
   const unique = []
   const seen = new Set()
   for (const item of results) {
@@ -78,7 +78,7 @@ async function getSource2Listings({ minPrice = 1000, maxPrice = 5000, rooms = []
     }
   }
 
-  logger.info('Results after deduplication:', unique.length)
+  logger.info(`Results after deduplication: ${unique.length}`)
 
   unique.sort((a, b) => {
     const dateA = parsePolishDate(a.location)
