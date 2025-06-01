@@ -11,5 +11,8 @@ assets
 users
 test
 logs
-
+*.xml
+*.exe
+*.log
+*.config
 

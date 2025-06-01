@@ -1,6 +1,8 @@
 /**
- *   node src/winService.js --install
- *   node src/winService.js --uninstall
+ * Для установки сервиса:
+ *   node service.js
+ * Для удаления сервиса:
+ *   node service.js --uninstall
  */
 
 const Service = require('node-windows').Service
@@ -41,4 +43,13 @@ svc.on('error', (err) => {
   console.error('Service error:', err)
 })
 
-svc.install()
+svc.on('uninstall', () => {
+  console.log('Service uninstalled')
+})
+
+
+if (process.argv.includes('--uninstall')) {
+  svc.uninstall()
+} else {
+  svc.install()
+}
