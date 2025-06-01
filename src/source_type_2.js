@@ -19,7 +19,7 @@ async function getSource2Listings({ minPrice = 1000, maxPrice = 5000, rooms = []
   const DEBUG_LEVEL = parseInt(process.env.DEBUG_LEVEL || '0', 10)
   const MAX_PAGE = parseInt(process.env.MAX_PAGE || '5', 5)
   const districtList = districts.length === 0 ? [null] : districts
-
+  const logger = require('../src/logger')
   const screenshotDir = './path/out'
   if (DEBUG_LEVEL > 5 && !fs.existsSync(screenshotDir)) {
     fs.mkdirSync(screenshotDir, { recursive: true })
@@ -68,7 +68,7 @@ async function getSource2Listings({ minPrice = 1000, maxPrice = 5000, rooms = []
 
   await browser.close()
 
-  console.log('Results before deduplication:', results.length)
+  logger.log('Results before deduplication:', results.length)
   const unique = []
   const seen = new Set()
   for (const item of results) {
@@ -78,7 +78,7 @@ async function getSource2Listings({ minPrice = 1000, maxPrice = 5000, rooms = []
     }
   }
 
-  console.log('Results after deduplication:', unique.length)
+  logger.log('Results after deduplication:', unique.length)
 
   unique.sort((a, b) => {
     const dateA = parsePolishDate(a.location)
