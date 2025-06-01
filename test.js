@@ -26,7 +26,7 @@ async function main() {
   // })
   // logger.log(source1Results)
 
-  logger.log("=== Source2 LISTINGS ===")
+  logger.info("=== Source2 LISTINGS ===")
   const source2Results = await getSource2Listings({
     minPrice: 3500,
     maxPrice: 4000,
@@ -39,11 +39,11 @@ async function main() {
 
   const firstSome = source2Results.slice(0, items)
   // const lastSome = source2Results.slice(-items)
-  logger.log(`First ${items}:`, firstSome)
+  logger.info(`First ${items}:`, firstSome)
   // logger.log(`Last ${items}:`, lastSome)
   const withBase64 = await addBase64Photo(firstSome, 2, '12345678')
-  logger.log("=== Listings with Base64 Photos ===")
-  logger.log(withBase64)
+  logger.info("=== Listings with Base64 Photos ===")
+  logger.info(withBase64)
 
 }
 

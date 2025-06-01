@@ -68,7 +68,7 @@ async function getSource2Listings({ minPrice = 1000, maxPrice = 5000, rooms = []
 
   await browser.close()
 
-  logger.log('Results before deduplication:', results.length)
+  logger.info('Results before deduplication:', results.length)
   const unique = []
   const seen = new Set()
   for (const item of results) {
@@ -78,7 +78,7 @@ async function getSource2Listings({ minPrice = 1000, maxPrice = 5000, rooms = []
     }
   }
 
-  logger.log('Results after deduplication:', unique.length)
+  logger.info('Results after deduplication:', unique.length)
 
   unique.sort((a, b) => {
     const dateA = parsePolishDate(a.location)
