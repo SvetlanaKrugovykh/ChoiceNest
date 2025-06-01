@@ -1,3 +1,8 @@
+/**
+ *   node src/winService.js --install
+ *   node src/winService.js --uninstall
+ */
+
 const Service = require('node-windows').Service
 const path = require('path')
 
