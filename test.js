@@ -48,5 +48,5 @@ async function main() {
 }
 
 main().catch(err => {
-  logger.error("Error fetching listings:", err)
+  logger.error(`Error fetching listings: ${err}`)
 })

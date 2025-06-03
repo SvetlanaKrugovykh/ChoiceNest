@@ -35,7 +35,7 @@ async function addBase64ScreenShot(listings, source_num, chatID = 'default') {
     const context = browser.defaultBrowserContext()
     await context.setCookie(...cookies)
   } catch (e) {
-    logger.error('Failed to set cookies:', e.message)
+    logger.error(`Failed to set cookies: ${e.message}`)
   }
 
   const screenshotDir = './path/out'
@@ -58,7 +58,7 @@ async function addBase64ScreenShot(listings, source_num, chatID = 'default') {
       results.push({ ...item, photo_base_64 })
     } catch (err) {
       results.push({ ...item, photo_base_64: '' })
-      logger.error(`Error processing link ${item.link}:`, err.message)
+      logger.error(`Error processing link ${item.link}: ${err.message}`)
     }
   }
 
@@ -79,7 +79,7 @@ async function addBase64Photo(listings, source_num, chatID = 'default') {
     const context = browser.defaultBrowserContext()
     await context.setCookie(...cookies)
   } catch (e) {
-    logger.error('Failed to set cookies:', e.message)
+    logger.error(`Failed to set cookies: ${e.message}`)
   }
 
   const screenshotDir = './path/out'
@@ -115,7 +115,7 @@ async function addBase64Photo(listings, source_num, chatID = 'default') {
       results.push({ ...item, photo_base_64 })
     } catch (err) {
       results.push({ ...item, photo_base_64: '' })
-      logger.error(`Error processing link ${item.link}:`, err.message)
+      logger.error(`Error processing link ${item.link} ${err.message}`)
     }
   }
 

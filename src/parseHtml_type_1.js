@@ -36,7 +36,7 @@ module.exports.extractSentencesFromHTML_type_1 = async function (filename, photo
 
     return results
   } catch (err) {
-    logger.error('Error reading html:', err.message)
+    logger.error(`Error reading html: ${err.message}`)
     return []
   }
 }
