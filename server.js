@@ -1,5 +1,6 @@
 const fastify = require('fastify')({ logger: true })
 const routes = require('./src/routes/listings')
+const logger = require('./src/logger')
 
 fastify.register(routes, { prefix: '/api' })
 
@@ -9,9 +10,14 @@ const start = async () => {
 
   try {
     await fastify.listen({ port: PORT, host: HOST })
-    fastify.log.info(`Server listening on http://${HOST}:${PORT}`)
+    const msg = `Server listening on http://${HOST}:${PORT}`
+    const timestamp = new Date().toISOString()
+    fastify.log.info(`${timestamp} ${msg}`)
+    logger.info(`${timestamp} ${msg}`)
   } catch (err) {
-    fastify.log.error(err)
+    const timestamp = new Date().toISOString()
+    fastify.log.error(`${timestamp} ${err}`)
+    logger.error(`${timestamp} ${err}`)
     process.exit(1)
   }
 }
